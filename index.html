@@ -1,0 +1,342 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Para o Meu Amor ❤️</title>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Montserrat:wght@300;500;700&family=Playfair+Display:ital,wght@0,400;1,700&display=swap');
+
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        body {
+            font-family: 'Montserrat', sans-serif;
+            background: linear-gradient(135deg, #ffe5ec, #ffc2d1);
+            min-height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            overflow-x: hidden;
+        }
+
+        /* TELA 1: O JOGO DO BOTÃO */
+        #tela-jogo {
+            text-align: center;
+            background: white;
+            padding: 40px;
+            border-radius: 20px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.1);
+            max-width: 400px;
+            width: 90%;
+            transition: opacity 0.8s ease;
+        }
+
+        h2 {
+            font-family: 'Playfair Display', serif;
+            color: #ff4d6d;
+            margin-bottom: 30px;
+            font-size: 1.8rem;
+        }
+
+        .botoes {
+            display: flex;
+            justify-content: center;
+            gap: 20px;
+            height: 50px;
+            position: relative;
+        }
+
+        button {
+            padding: 12px 30px;
+            font-size: 1rem;
+            border: none;
+            border-radius: 25px;
+            cursor: pointer;
+            font-weight: bold;
+            transition: transform 0.2s;
+        }
+
+        #btn-sim {
+            background-color: #ff4d6d;
+            color: white;
+        }
+
+        #btn-sim:hover {
+            transform: scale(1.1);
+        }
+
+        #btn-nao {
+            background-color: #ccc;
+            color: #333;
+            position: absolute;
+        }
+
+        /* TELA 2: CONTADOR E CARTA (ESCONDIDA NO INÍCIO) */
+        #tela-principal {
+            display: none;
+            opacity: 0;
+            text-align: center;
+            max-width: 600px;
+            width: 90%;
+            padding: 20px;
+            transition: opacity 1s ease;
+        }
+
+        .contador-container {
+            background: rgba(255, 255, 255, 0.9);
+            padding: 30px;
+            border-radius: 20px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.05);
+            margin-bottom: 30px;
+        }
+
+        .timer {
+            display: flex;
+            justify-content: space-around;
+            margin-top: 20px;
+        }
+
+        .tempo-box {
+            background: #ff4d6d;
+            color: white;
+            padding: 15px;
+            border-radius: 10px;
+            min-width: 70px;
+        }
+
+        .tempo-box span {
+            display: block;
+            font-size: 1.8rem;
+            font-weight: bold;
+        }
+
+        .tempo-box label {
+            font-size: 0.7rem;
+            text-transform: uppercase;
+        }
+
+        .carta {
+            background: white;
+            padding: 40px 30px;
+            border-radius: 20px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.05);
+            text-align: left;
+            line-height: 1.8;
+            color: #444;
+        }
+
+        .carta h1 {
+            font-family: 'Playfair Display', serif;
+            color: #ff4d6d;
+            text-align: center;
+            margin-bottom: 20px;
+        }
+
+        /* CSS do Novo Mural de Fotos */
+        .mural-fotos {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: center;
+            gap: 20px;
+            margin-top: 30px;
+            margin-bottom: 30px;
+            padding: 20px 0;
+        }
+
+        .polaroid {
+            background: white;
+            padding: 10px 10px 25px 10px;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.15);
+            border-radius: 4px;
+            width: 150px; /* Reduzido levemente para organizar melhor 21 fotos em grid */
+            transition: transform 0.3s ease;
+        }
+
+        .polaroid img {
+            width: 100%;
+            height: 130px;
+            object-fit: cover;
+            border-radius: 2px;
+        }
+
+        /* Efeito de inclinação aleatória para parecer fotos espalhadas num mural */
+        .polaroid:nth-child(even) { transform: rotate(4deg); }
+        .polaroid:nth-child(odd) { transform: rotate(-3deg); }
+        .polaroid:nth-child(3n) { transform: rotate(6deg); }
+        .polaroid:nth-child(5n) { transform: rotate(-5deg); }
+
+        .polaroid:hover {
+            transform: scale(1.25) rotate(0deg) !important;
+            z-index: 10;
+            box-shadow: 0 10px 25px rgba(0,0,0,0.25);
+        }
+
+        /* Animação dos corações flutuantes */
+        .coracao-flutuante {
+            position: fixed;
+            bottom: -50px;
+            color: #ff4d6d;
+            font-size: 24px;
+            user-select: none;
+            pointer-events: none;
+            z-index: 999;
+            animation: subir 4s linear forwards;
+        }
+
+        @keyframes subir {
+            0% {
+                transform: translateY(0) translateX(0) scale(1);
+                opacity: 1;
+            }
+            100% {
+                transform: translateY(-105vh) translateX(100px) scale(0.5);
+                opacity: 0;
+            }
+        }
+    </style>
+</head>
+<body>
+
+    <div id="tela-jogo">
+        <h2>Você aceita continuar sendo a dona do meu coração e a pessoa mais feliz do mundo ao meu lado? 🥺❤️</h2>
+        <div class="botoes">
+            <button id="btn-sim" onclick="aceitou()">SIM!</button>
+            <button id="btn-nao" onmouseover="fuga()" onclick="fuga()">NÃO</button>
+        </div>
+    </div>
+
+    <div id="tela-principal">
+        <div class="contador-container">
+            <h2>Olha só quanto tempo faz que minha vida ficou completa...</h2>
+            <div class="timer">
+                <div class="tempo-box"><span id="dias">00</span><label>Dias</label></div>
+                <div class="tempo-box"><span id="horas">00</span><label>Horas</label></div>
+                <div class="tempo-box"><span id="minutos">00</span><label>Min</label></div>
+                <div class="tempo-box"><span id="segundos">00</span><label>Seg</label></div>
+            </div>
+        </div>
+
+        <div class="carta">
+            <h1>Para o Meu Amor,</h1>
+            <p>Desde o momento em que nossa história começou, cada segundo ao seu lado tem sido um presente. Eu nunca imaginei encontrar alguém que me entendesse tão bem, que me fizesse rir como você faz e que transformasse os dias comuns em momentos inesquecíveis.</p>
+            
+            <div class="mural-fotos">
+    <div class="polaroid"><img src="images/vida.jpg" alt="Momento 1"></div>
+    <div class="polaroid"><img src="images/vida1.jpg" alt="Momento 2"></div>
+    <div class="polaroid"><img src="images/vida2.jpg" alt="Momento 3"></div>
+    <div class="polaroid"><img src="images/vida4.jpg" alt="Momento 4"></div>
+    <div class="polaroid"><img src="images/vida5.jpg" alt="Momento 5"></div>
+    <div class="polaroid"><img src="images/vida6.jpg" alt="Momento 6"></div>
+    <div class="polaroid"><img src="images/vida7.jpg" alt="Momento 7"></div>
+    <div class="polaroid"><img src="images/vida8.jpg" alt="Momento 8"></div>
+    <div class="polaroid"><img src="images/vida9.jpg" alt="Momento 9"></div>
+    <div class="polaroid"><img src="images/vida10.jpg" alt="Momento 10"></div>
+    <div class="polaroid"><img src="images/vida11.jpg" alt="Momento 11"></div>
+    <div class="polaroid"><img src="images/vida12.jpg" alt="Momento 12"></div>
+    <div class="polaroid"><img src="images/vida13.jpg" alt="Momento 13"></div>
+    <div class="polaroid"><img src="images/vida14.jpg" alt="Momento 14"></div>
+    <div class="polaroid"><img src="images/vida15.jpg" alt="Momento 15"></div>
+    <div class="polaroid"><img src="images/vida16.jpg" alt="Momento 16"></div>
+    <div class="polaroid"><img src="images/vida17.jpg" alt="Momento 17"></div>
+    <div class="polaroid"><img src="images/vida18.jpg" alt="Momento 18"></div>
+    <div class="polaroid"><img src="images/vida19.jpg" alt="Momento 19"></div>
+    <div class="polaroid"><img src="images/vida20.jpg" alt="Momento 20"></div>
+</div>
+
+            <p>Obrigado por ser minha parceira, minha melhor amiga e o meu porto seguro. Criar esse site foi só uma forma boba de tentar mensurar o imensurável: o tamanho do meu amor por você. Feliz Dia dos Namorados! Te amo para sempre. ❤️</p>
+        </div>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.5.1/dist/confetti.browser.min.js"></script>
+
+    <script>
+        // CONFIGURAÇÃO DA DATA DO NAMORO (Ano, Mês - 1, Dia, Hora, Minuto)
+        const dataInicio = new Date(2026, 0, 17, 20, 0, 0); 
+
+        // Função para fazer o botão NÃO fugir
+        function fuga() {
+            const btnNao = document.getElementById('btn-nao');
+            const x = Math.random() * (window.innerWidth - btnNao.offsetWidth - 50);
+            const y = Math.random() * (window.innerHeight - btnNao.offsetHeight - 50);
+            
+            btnNao.style.position = 'fixed';
+            btnNao.style.left = x + 'px';
+            btnNao.style.top = y + 'px';
+        }
+
+        // Função disparada ao clicar no SIM
+        function aceitou() {
+            // Chuva inicial de confetes estourando na tela
+            confetti({
+                particleCount: 150,
+                spread: 80,
+                origin: { y: 0.6 }
+            });
+
+            // Transição de telas (Esconde o jogo e mostra o presente)
+            const telaJogo = document.getElementById('tela-jogo');
+            const telaPrincipal = document.getElementById('tela-principal');
+
+            telaJogo.style.opacity = '0';
+            setTimeout(() => {
+                telaJogo.style.display = 'none';
+                telaPrincipal.style.display = 'block';
+                setTimeout(() => {
+                    telaPrincipal.style.opacity = '1';
+                }, 50);
+            }, 800);
+
+            // Inicia o contador de tempo em tempo real
+            atualizarContador();
+            setInterval(atualizarContador, 1000);
+
+            // GATILHO DA CHUVA DE CORAÇÕES FLUTUANTES
+            iniciarChuvaDeCoracoes();
+        }
+
+        // Função para gerar a chuva contínua de corações no plano de fundo
+        function iniciarChuvaDeCoracoes() {
+            setInterval(() => {
+                const coracao = document.createElement('div');
+                coracao.classList.add('coracao-flutuante');
+                coracao.innerText = '❤️';
+                
+                // Distribui os corações aleatoriamente pela largura da tela
+                coracao.style.left = Math.random() * 100 + 'vw';
+                
+                // Define tamanhos e velocidades levemente diferentes para um efeito natural
+                const tamanho = Math.random() * 20 + 12;
+                coracao.style.fontSize = tamanho + 'px';
+                coracao.style.animationDuration = (Math.random() * 2 + 3) + 's'; 
+                
+                document.body.appendChild(coracao);
+                
+                // Limpa o elemento HTML do código após sumir da tela
+                setTimeout(() => {
+                    coracao.remove();
+                }, 4000);
+            }, 300); // Cria um novo coração a cada 300 milissegundos
+        }
+
+        // Função do cálculo do tempo
+        function atualizarContador() {
+            const agora = new Date();
+            const diferenca = agora - dataInicio;
+
+            const dias = Math.floor(diferenca / (1000 * 60 * 60 * 24));
+            const horas = Math.floor((diferenca % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
+            const minutos = Math.floor((diferenca % (1000 * 60 * 60)) / (1000 * 60));
+            const segundos = Math.floor((diferenca % (1000 * 60)) / 1000);
+
+            document.getElementById('dias').innerText = dias;
+            document.getElementById('horas').innerText = horas < 10 ? '0' + horas : horas;
+            document.getElementById('minutos').innerText = minutos < 10 ? '0' + minutes : minutos;
+            document.getElementById('segundos').innerText = segundos < 10 ? '0' + segundos : segundos;
+        }
+    </script>
+</body>
+</html>
