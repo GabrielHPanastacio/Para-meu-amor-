@@ -323,7 +323,7 @@
             }, 300); // Cria um novo coração a cada 300 milissegundos
         }
 
-        // Função do cálculo do tempo
+        // Função do cálculo do tempo corrigida
         function atualizarContador() {
             const agora = new Date();
             const diferenca = agora - dataInicio;
@@ -335,9 +335,10 @@
 
             document.getElementById('dias').innerText = dias;
             document.getElementById('horas').innerText = horas < 10 ? '0' + horas : horas;
-            document.getElementById('minutos').innerText = minutos < 10 ? '0' + minutes : minutos;
+            document.getElementById('minutos').innerText = minutos < 10 ? '0' + minutos : minutos; // Corrigido aqui!
             document.getElementById('segundos').innerText = segundos < 10 ? '0' + segundos : segundos;
-        }
+}
+        
     </script>
 </body>
 </html>
