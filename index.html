@@ -205,7 +205,7 @@
         <h2>Você aceita continuar sendo a dona do meu coração e a pessoa mais feliz do mundo ao meu lado? 🥺❤️</h2>
         <div class="botoes">
             <button id="btn-sim" onclick="aceitou()">SIM!</button>
-            <button id="btn-nao" onmouseover="fuga()" onclick="fuga()">NÃO</button>
+            <button id="btn-nao" onmouseover="fuga()" ontouchstart="fugaTouch(event)" onclick="fuga()">NÃO</button>
         </div>
     </div>
 
@@ -266,6 +266,22 @@
             btnNao.style.left = x + 'px';
             btnNao.style.top = y + 'px';
         }
+
+            function fuga() {
+                const btnNao = document.getElementById('btn-nao');
+                const x = Math.random() * (window.innerWidth - btnNao.offsetWidth - 50);
+                const y = Math.random() * (window.innerHeight - btnNao.offsetHeight - 50);
+                
+                btnNao.style.position = 'fixed';
+                btnNao.style.left = x + 'px';
+                btnNao.style.top = y + 'px';
+}
+
+// ADICIONE ESSA NOVA FUNÇÃO BEM AQUI:
+function fugaTouch(event) {
+    event.preventDefault(); // Impede o clique real no celular
+    fuga(); // Faz o botão mudar de lugar
+}
 
         // Função disparada ao clicar no SIM
         function aceitou() {
